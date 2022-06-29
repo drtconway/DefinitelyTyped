@@ -6,27 +6,27 @@
 //                    David Bjerremose <https://github.com/DaBs>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-type BluetoothServiceUUID = number | string;
-type BluetoothCharacteristicUUID = number | string;
-type BluetoothDescriptorUUID = number | string;
+export type BluetoothServiceUUID = number | string;
+export type BluetoothCharacteristicUUID = number | string;
+export type BluetoothDescriptorUUID = number | string;
 
-type BluetoothManufacturerData = Map<number, DataView>;
-type BluetoothServiceData = Map<BluetoothServiceUUID, DataView>;
+export type BluetoothManufacturerData = Map<number, DataView>;
+export type BluetoothServiceData = Map<BluetoothServiceUUID, DataView>;
 
-interface BluetoothDataFilter {
+export interface BluetoothDataFilter {
     readonly dataPrefix?: BufferSource | undefined;
     readonly mask?: BufferSource | undefined;
 }
 
-interface BluetoothManufacturerDataFilter extends BluetoothDataFilter {
+export interface BluetoothManufacturerDataFilter extends BluetoothDataFilter {
     companyIdentifier: number;
 }
 
-interface BluetoothServiceDataFilter extends BluetoothDataFilter {
+export interface BluetoothServiceDataFilter extends BluetoothDataFilter {
     service: BluetoothServiceUUID;
 }
 
-interface BluetoothLEScanFilter {
+export interface BluetoothLEScanFilter {
     readonly name?: string | undefined;
     readonly namePrefix?: string | undefined;
     readonly services?: BluetoothServiceUUID[] | undefined;
@@ -34,18 +34,18 @@ interface BluetoothLEScanFilter {
     readonly serviceData?: BluetoothServiceDataFilter[] | undefined;
 }
 
-interface BluetoothLEScanOptions {
+export interface BluetoothLEScanOptions {
     readonly filters?: BluetoothLEScanFilter[] | undefined;
     readonly keepRepeatedDevices?: boolean | undefined;
     readonly acceptAllAdvertisements?: boolean | undefined;
 }
 
-interface BluetoothLEScan extends BluetoothLEScanOptions {
+export interface BluetoothLEScan extends BluetoothLEScanOptions {
     active: boolean;
     stop: () => void;
 }
 
-type RequestDeviceOptions = {
+export type RequestDeviceOptions = {
     filters: BluetoothLEScanFilter[];
     optionalServices?: BluetoothServiceUUID[] | undefined;
     optionalManufacturerData?: number[] | undefined;
@@ -55,7 +55,7 @@ type RequestDeviceOptions = {
     optionalManufacturerData?: number[] | undefined;
 };
 
-interface BluetoothAdvertisingEvent extends Event {
+export interface BluetoothAdvertisingEvent extends Event {
     readonly device: BluetoothDevice;
     readonly uuids: BluetoothServiceUUID[];
     readonly manufacturerData: BluetoothManufacturerData;
@@ -66,7 +66,7 @@ interface BluetoothAdvertisingEvent extends Event {
     readonly txPower?: number | undefined;
 }
 
-interface BluetoothRemoteGATTDescriptor {
+export interface BluetoothRemoteGATTDescriptor {
     readonly characteristic: BluetoothRemoteGATTCharacteristic;
     readonly uuid: string;
     readonly value?: DataView | undefined;
@@ -74,7 +74,7 @@ interface BluetoothRemoteGATTDescriptor {
     writeValue(value: BufferSource): Promise<void>;
 }
 
-interface BluetoothCharacteristicProperties {
+export interface BluetoothCharacteristicProperties {
     readonly broadcast: boolean;
     readonly read: boolean;
     readonly writeWithoutResponse: boolean;
@@ -86,11 +86,11 @@ interface BluetoothCharacteristicProperties {
     readonly writableAuxiliaries: boolean;
 }
 
-interface CharacteristicEventHandlers {
+export interface CharacteristicEventHandlers {
     oncharacteristicvaluechanged: (this: this, ev: Event) => any;
 }
 
-interface BluetoothRemoteGATTCharacteristic extends EventTarget, CharacteristicEventHandlers {
+export interface BluetoothRemoteGATTCharacteristic extends EventTarget, CharacteristicEventHandlers {
     readonly service: BluetoothRemoteGATTService;
     readonly uuid: string;
     readonly properties: BluetoothCharacteristicProperties;
@@ -107,13 +107,13 @@ interface BluetoothRemoteGATTCharacteristic extends EventTarget, CharacteristicE
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
 }
 
-interface ServiceEventHandlers {
+export interface ServiceEventHandlers {
     onserviceadded: (this: this, ev: Event) => any;
     onservicechanged: (this: this, ev: Event) => any;
     onserviceremoved: (this: this, ev: Event) => any;
 }
 
-interface BluetoothRemoteGATTService extends EventTarget, CharacteristicEventHandlers, ServiceEventHandlers {
+export interface BluetoothRemoteGATTService extends EventTarget, CharacteristicEventHandlers, ServiceEventHandlers {
     readonly device: BluetoothDevice;
     readonly uuid: string;
     readonly isPrimary: boolean;
@@ -127,7 +127,7 @@ interface BluetoothRemoteGATTService extends EventTarget, CharacteristicEventHan
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
 }
 
-interface BluetoothRemoteGATTServer {
+export interface BluetoothRemoteGATTServer {
     readonly device: BluetoothDevice;
     readonly connected: boolean;
     connect(): Promise<BluetoothRemoteGATTServer>;
@@ -136,16 +136,16 @@ interface BluetoothRemoteGATTServer {
     getPrimaryServices(service?: BluetoothServiceUUID): Promise<BluetoothRemoteGATTService[]>;
 }
 
-interface BluetoothDeviceEventHandlers {
+export interface BluetoothDeviceEventHandlers {
     onadvertisementreceived: (this: this, ev: BluetoothAdvertisingEvent) => any;
     ongattserverdisconnected: (this: this, ev: Event) => any;
 }
 
-interface WatchAdvertisementsOptions {
+export interface WatchAdvertisementsOptions {
     signal?: AbortSignal;
 }
 
-interface BluetoothDevice extends EventTarget, BluetoothDeviceEventHandlers, CharacteristicEventHandlers, ServiceEventHandlers {
+export interface BluetoothDevice extends EventTarget, BluetoothDeviceEventHandlers, CharacteristicEventHandlers, ServiceEventHandlers {
     readonly id: string;
     readonly name?: string | undefined;
     readonly gatt?: BluetoothRemoteGATTServer | undefined;
@@ -159,7 +159,7 @@ interface BluetoothDevice extends EventTarget, BluetoothDeviceEventHandlers, Cha
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
 }
 
-interface Bluetooth extends EventTarget, BluetoothDeviceEventHandlers, CharacteristicEventHandlers, ServiceEventHandlers {
+export interface Bluetooth extends EventTarget, BluetoothDeviceEventHandlers, CharacteristicEventHandlers, ServiceEventHandlers {
     getDevices(): Promise<BluetoothDevice[]>;
     getAvailability(): Promise<boolean>;
     onavailabilitychanged: (this: this, ev: Event) => any;
@@ -171,6 +171,6 @@ interface Bluetooth extends EventTarget, BluetoothDeviceEventHandlers, Character
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
 }
 
-interface Navigator {
+export interface Navigator {
     bluetooth: Bluetooth;
 }
